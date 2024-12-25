@@ -33,7 +33,7 @@ const dispatch = useDispatch();
 
   const sendMessageHandler = async () => {
     try {
-      const res = await axios.post(`http://localhost:8000/api/v1/post/${selectedPost?._id}/comment`, { text }, {
+      const res = await axios.post(`https://instaclone-bchw.onrender.com/api/v1/post/${selectedPost?._id}/comment`, { text }, {
         headers: {
           'Content-Type': 'application/json'
         },
