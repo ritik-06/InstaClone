@@ -19,7 +19,7 @@ const Post = ({ post }) => {
     const { user } = useSelector(store => store.auth);
     const { posts } = useSelector(store => store.post);
     const [liked, setLiked] = useState(post.likes.includes(user?._id) || false);
-    const [bookmarked, setBookmarked] = useState(post.likes.includes(user?._id) || false);
+    //const [bookmarked, setBookmarked] = useState(post.likes.includes(user?._id) || false);
     const [postLike, setPostLike] = useState(post.likes.length);
     const [comment, setComment] = useState(post.comments);
     const dispatch = useDispatch();
@@ -103,7 +103,7 @@ const Post = ({ post }) => {
             const res = await axios.get(`https://instaclone-bchw.onrender.com/api/v1/post/${post?._id}/bookmark`, {withCredentials:true});
             if(res.data.success){
                 toast.success(res.data.message);
-                setBookmarked(!bookmarked);
+                //setBookmarked(!bookmarked);
             }
         } catch (error) {
             console.log(error);
@@ -153,9 +153,7 @@ const Post = ({ post }) => {
                     }} className='cursor-pointer hover:text-gray-600' />
                     <Send className='cursor-pointer hover:text-gray-600' />
                 </div>
-                {
-                    bookmarked ? <Bookmark onClick={bookmarkHandler} className='cursor-pointer hover:text-gray-600' /> : <FaBookmark onClick={bookmarkHandler} className='cursor-pointer'/>
-                }
+                <Bookmark onClick={bookmarkHandler} className='cursor-pointer hover:text-gray-600' />
             </div>
             <span className='font-medium block mb-2'>{postLike} likes</span>
             <p>
