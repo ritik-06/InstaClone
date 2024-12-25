@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import {Bookmark, MessageCircle, MoreHorizontal, Send } from 'lucide-react'
-import { FaRegHeart } from "react-icons/fa6";
+import { FaRegHeart, FaBookmark } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa";
 import React, { useState } from 'react'
 import { Button } from './ui/button'
@@ -19,6 +19,7 @@ const Post = ({ post }) => {
     const { user } = useSelector(store => store.auth);
     const { posts } = useSelector(store => store.post);
     const [liked, setLiked] = useState(post.likes.includes(user?._id) || false);
+    const [bookmarked, setBookmarked] = useState(post.likes.includes(user?._id) || false);
     const [postLike, setPostLike] = useState(post.likes.length);
     const [comment, setComment] = useState(post.comments);
     const dispatch = useDispatch();
@@ -97,6 +98,17 @@ const Post = ({ post }) => {
             setText("");
         }
     }
+    const bookmarkHandler = async () => {
+        try {
+            const res = await axios.get(`https://instaclone-bchw.onrender.com/api/v1/post/${post?._id}/bookmark`, {withCredentials:true});
+            if(res.data.success){
+                toast.success(res.data.message);
+                setBookmarked(!bookmarked);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <div className='my-2 w-full max-w-sm mx-auto'>
@@ -141,7 +153,9 @@ const Post = ({ post }) => {
                     }} className='cursor-pointer hover:text-gray-600' />
                     <Send className='cursor-pointer hover:text-gray-600' />
                 </div>
-                <Bookmark className='cursor-pointer hover:text-gray-600' />
+                {
+                    bookmarked ? <Bookmark onClick={bookmarkHandler} className='cursor-pointer hover:text-gray-600' /> : <FaBookmark onClick={bookmarkHandler} className='cursor-pointer'/>
+                }
             </div>
             <span className='font-medium block mb-2'>{postLike} likes</span>
             <p>
